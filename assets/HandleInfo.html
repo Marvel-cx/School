@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>报警记录</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/ionic.min.css" />
+		<script type="text/javascript" src="js/ionic.bundle.min.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<style>
+			.bar-header {
+				padding-top: 0;
+				padding-bottom: 0;
+			}
+			
+			.bar-header img {
+				width: 20px;
+				height: 20px;
+				margin-top: 2vh;
+				position: absolute;
+			}
+			
+			.bar-header {
+				position: fixed;
+				background: #5ad2e2;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="bar bar-header">
+			<img src="img/fanhui.png" style="z-index:10;" onclick="javascript:history.back(-1)"/>
+			<h1 class="title" style="color: white;">处理信息</h1>
+		</div>
+		
+		<div class="content has-header" style="margin-top: 5vh;height: 60vh;">
+					
+			
+				<textarea id="alrmInfo" cols="45" rows="10" style="border: 1px solid #CCCCCC;resize:none;margin:auto"></textarea>
+				
+				<button id="submit" type="submit" class="button button-block button-positive" style="width:90%;margin-left:5%;border-radius:20px;">上报</button>
+									
+		</div>
+		
+	</body>
+	<script>
+		var submit=document.getElementById("submit");
+		    
+		$(function(){
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+				var r = window.location.search.substr(1).match(reg); //匹配目标参数
+				if(r != null) return unescape(r[2]);
+				return null; //返回参数值
+			}
+
+			//接收URL中的参数cusno
+			var id = getUrlParam('a');
+			
+			submit.onclick=function(){
+				var info=document.getElementById("alrmInfo").value;				
+				$.ajax({
+					type: "POST",					
+					//url: "http://172.16.31.172:8080/SchoolServer/saveInfo",
+					url: "http://223.72.155.26:8666/SchoolServer/saveInfo",
+					dataType: 'JSONP',
+					data:{"result":info,"recordNo":id},
+	                jsonp:"callback",
+	                success:function(result){
+	              		//data=eval(result);	              		
+						//addBox(result);						
+	                },
+	                error:function(XMLHttpRequest, textStatus, errorThrown){
+	                	console.log(XMLHttpRequest.status);
+                        console.log(XMLHttpRequest.readyState);
+                        console.log(textStatus);
+	                }
+				});
+				window.location.href="AlarmHistory.html";
+			}
+			
+								
+		})
+		
+		
+		
+		
+	</script>
+
+</html>

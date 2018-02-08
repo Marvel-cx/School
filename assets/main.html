@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="ionic">
+	<head>
+		<meta charset="UTF-8">
+		<title>主页</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/ionic.min.css" />
+		<script type="text/javascript" src="js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=NTnSwZu6V6aWz17y1ZNnUflKmKy8gskG"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<style>
+			.bar-header img{
+				width: 38px;
+				height: 38px;
+				position:absolute;				
+			}
+			
+			.bar-header{
+				position: fixed;
+				background: #5ad2e2;											
+			}
+		</style>
+	</head>
+	<body>
+		<div class="bar bar-header">
+			<img src="img/personal.png"/>
+			<h1 class="title" style="color: white;">主页</h1>
+			<img src="img/history.png"/ style="right: 10px;">
+		</div>
+				
+		
+		<ion-content class="mapContent" style="overflow: auto;">
+			<!--<img src="images/PE/map.jpg" />-->
+			<div id="allmap"></div>
+		</ion-content>
+	</body>
+	
+</html>

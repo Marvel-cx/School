@@ -1,0 +1,27 @@
+{
+	"login.html": {
+		"resources": [
+			"js/ionic.bundle.min.js",
+			"img/loginPwd.png",
+			"login.html",
+			"img/loginUser.png",
+			"js/jquery-3.2.1.min.js",
+			"css/ionic.min.css"
+		],
+		"refer": [
+			"login.html"
+		]
+	},
+	"AlarmHistory.html": {
+		"resources": [
+			"js/ionic.bundle.min.js",
+			"js/jquery-3.2.1.min.js",
+			"img/fanhui.png",
+			"css/ionic.min.css",
+			"fonts/ionicons.ttf",
+			"img/date.png",
+			"img/site.png"
+		],
+		"refer": []
+	}
+}

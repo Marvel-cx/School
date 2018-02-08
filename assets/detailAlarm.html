@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>报警详情</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/ionic.min.css" />
+		<script type="text/javascript" src="js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=NTnSwZu6V6aWz17y1ZNnUflKmKy8gskG"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<style>
+			.bar-header img {
+				width: 20px;
+				height: 20px;
+				margin-top: 5px;
+			}
+			
+			.bar-header {				
+				position: fixed;
+				background: #5ad2e2;
+			}
+			
+			.content{
+				position: relative;				
+				height:85vh;
+				margin-top: 44px;
+			}
+			
+			.content span{
+				position:absolute;
+			}
+			
+			.detailInfo{
+				height:16vh;				
+				margin-top:2vh;
+			}
+			
+			.infoList{
+				
+			}
+			.infoList li{
+				position:relative;
+				vertical-align: middle;
+				padding-top:1px;
+				padding-bottom:1px;
+			}
+			.infoList span{
+				position: absolute;				
+			}
+			.infoList .type{
+				color:#fc5c81;				
+				font-size: 13px;
+				top:8px;
+			}
+			.infoList .handle{
+				width: 20vw;
+				height:5vh;
+				line-height: 5vh;
+				text-align: center;
+				border-radius: 20px;
+				color: white;
+				right: 1vw;	
+				top: 1vh;			
+				background:#fc5c81;
+			}
+			.infoList .time{
+				top: 8px;
+			}
+			.infoList .site{
+				top: 8px;
+			}
+			.video{
+				margin-top: 5vh;
+				height: 40vh;
+				background: #333333;
+			}
+			.pick-up{
+				position: absolute;
+				bottom: 0;
+				height: 5vh;				
+			}
+			.bar-footer{
+				background: #e5f3f6;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="bar bar-header">			
+			<img style="z-index:10;" src="img/fanhui.png" onclick="javascript:history.back(-1)" />
+			<h1 class="title" style="color: white;">报警详情</h1>
+		</div>
+		
+		<div class="content">					
+			<div class="detailInfo">
+				<ul id="e-Task" class="infoList">
+					<li>
+						<img src="img/video.png" style="width:28px;height:28px;margin-left: 5px;margin-top:3px;" />&nbsp;
+						<span class="type">吸烟</span>
+						<span id="goHandle" class="handle">去处理</span>
+					</li>
+					<li>
+						<img src="img/video-time.png" style="width:28px;height:28px;margin-left: 5px;margin-top: 3px;" />&nbsp;
+						<span id="alarmTime" class="time"></span>
+					</li>
+					<li>
+						<img src="img/video-site.png" style="width:28px;height:28px;margin-left: 5px;margin-top: 3px;" />&nbsp;
+						<span id="alarmSite" class="site"></span>
+					</li>
+				</ul>
+				
+				<div class="video">
+					
+				</div>
+				
+				<div style="text-align: center;padding-top: 2vh;">
+					<img src="img/bofang.png" style="width: 20vw;height: 20vw;margin-left: auto;" />
+				</div>
+				
+			</div>
+		</div>
+		
+		
+		<div class="bar bar-footer">
+		   <img src="img/pik-up.png" style="height:3vh;width: 3vh;margin-top:1vh;margin-left: 2vh;"/>
+		   <span id="cameraSite" style="display: inline-block;margin-top：1vh;line-height:34px;color: #4298ae;"></span>
+		</div>
+	</body>
+	<script>
+		$(function(){
+			//获取url中的参数
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+				var r = window.location.search.substr(1).match(reg); //匹配目标参数
+				if(r != null) return unescape(r[2]);
+				return null; //返回参数值
+			}
+
+			//接收URL中的参数cusno
+			var  recordNo= getUrlParam('recordNo');
+			//把值传到处理界面
+			var goHandle=document.getElementById("goHandle");
+			
+			goHandle.onclick=function(){
+				window.location.href="HandleInfo.html?a="+recordNo+"";
+			}
+			
+			$.ajax({
+				type: "GET",				
+				//url: "http://172.16.31.172:8080/SchoolServer/easyInfo",
+				url: "http://223.72.155.26:8666/SchoolServer/easyInfo",
+				dataType: 'JSONP',
+                jsonp:"callback",
+                success:function(result){
+              		data=eval(result);              		
+					addBox(result);
+                },
+                error:function(){
+                	alert("服务器连接失败");
+                }
+			});	
+			
+			function addBox(result) {
+			$.each(result, function(index, obj) {
+//					if(obj['handleSta']=="未处理"){			
+//						$("#e-Task").append("<a class='item' href='detailAlarm.html?recordNo="+obj['recordNo']+"' style='relative;'>"+
+//								"<span class='siteTime' style='display: inline-block;'>"+
+//									"<span style='font-size: 18px;'>"+obj['detailBuilding']+obj['detailFloor']+"</span>"+"<br/>"+
+//									"<span style='font-size: 15px;color:#C0C0C0;'>"+obj['alarmTime']+"</span>"+
+//								"</span>"+
+//								"<span class='state1'>"+obj['handleSta']+"</span>"+"<br/>"+
+//								"<span class='type'>"+							
+//									obj['smokeSta']+'、'+obj['infraredSta']+'、'+obj['occupySta']+
+//								"</span>"+							
+//							"</a>"
+//						);
+//					}
+				if(obj['recordNo']==recordNo){
+					$("#alarmTime").append(obj['alarmTime']);
+					$("#alarmSite").append(obj['detailBuilding']+obj['detailFloor']+obj['gender']+"厕"+obj['siteNum']);
+					$("#cameraSite").append(obj['detailBuilding']+obj['detailFloor']+obj['gender']+"厕机位");
+				}
+			});
+		}
+			
+			
+		})
+		
+		
+	</script>
+</html>

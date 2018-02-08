@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>登陆</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/ionic.min.css" />
+		<script type="text/javascript" src="js/ionic.bundle.min.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<style>
+			body {
+				background: #5ad2e2;
+			}
+			
+			.title {
+				margin-top: 10vh;
+				text-align: center;
+				color: white;
+			}
+			
+			.mainCard {
+				width: 96vw;
+				height: 60vh;
+				background: white;
+				margin: auto;
+				border-radius: 5%;
+				padding-top:1vh;
+			}	
+			
+			form{
+				padding-top: 5vh;
+			}
+			
+			form p{
+				margin-left:12px;
+				color: #CCCCCC;
+				font-size:20px;
+				font-weight: 400;
+				line-height: 20px;
+			}
+			
+			form img{
+				width:35px;
+				height:35px;				
+			}
+			.item-input-wrapper{
+				background: white;				
+				border: 2px solid #d3f3f7;
+			}
+			
+			.submit{
+				width:60vw;
+				height: 8vh;
+				border: none;
+				border-radius:40px;
+				margin-left:20vw;
+				margin-top: 2vh;
+				font-size: 25px;
+				font-weight: 500;
+				color: #4f91a6;
+				background: #e5f3f7;
+			}							
+		</style>
+	</head>
+
+	<body>
+		<div class="temp"></div>
+		<h1 class="title">Login</h1>
+
+		<div class="mainCard">			
+			<form>				
+				<p>User</p>
+				<div class="item-input-inset" style="padding-top:0px;">			
+					<label class="item-input-wrapper" style="padding:10px;">
+					  	<img src="img/loginUser.png" />
+					    <input id="userName" type="search" placeholder="请在此输入用户名">
+				 	</label>									 					 	
+				</div>
+				
+				
+				<p style="margin-top:4vh;">Password</p>
+				
+				<div class="item-input-inset" style="padding-top:0px;">			
+					<label class="item-input-wrapper" style="padding: 10px;">
+					  	<img src="img/loginPwd.png" />
+					    <input id="userPwd" type="password" placeholder="请在此输入用户名">
+				 	</label>									 					 	
+				</div>			
+			</form>
+			<button id="submit" class="submit">Login</button>
+		</div>
+	</body>
+	<script>
+		var userName=document.getElementById("userName");
+		var userPwd=document.getElementById("userPwd");
+		var submit=document.getElementById("submit");
+		
+		submit.onclick=function(){
+			if(userName.value == 'admin' && userPwd.value == '123'){
+				window.location.href='AlarmHistory.html';
+			}			
+		}		
+	</script>
+</html>

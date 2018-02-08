@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app="ionic">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/ionic.min.css" />
+		<script src="js/ionic.bundle.min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=NTnSwZu6V6aWz17y1ZNnUflKmKy8gskG"></script>
+		<style>
+			.bar-header{
+				height: 10vh;
+				padding-top: 0;
+				padding-bottom: 0;
+				position: fixed;
+				background: #5ad2e2;
+			}
+								
+			#allmap{width:100%;height:100vh;}
+			
+			.bar-header img{
+				width: 5vh;
+				height: 5vh;
+				margin-top: 2vh;
+				position:absolute;				
+			}
+		
+		
+		</style>
+	</head>
+
+	<body>			
+	 	<div class="bar bar-header">
+			<a href="HandleResult.html"><img style="z-index: 10;" src="img/personal.png"/></a>
+			<h1 class="title" style="color: white;height:10vh;line-height: 10vh;">主页</h1>
+			<a href="AlarmHistory.html"><img src="img/history.png"/ style="right: 10px;"></a>
+		</div>
+				
+				<ion-content class="mapContent" style="overflow: auto;">
+					<!--<img src="images/PE/map.jpg" />-->
+					<div id="allmap"></div>
+				</ion-content>				
+			
+			
+	</body>
+	<script>
+	    document.addEventListener('plusready', function(){
+			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+			
+		});
+		
+		 
+		// 百度地图API功能
+		var map = new BMap.Map("allmap");            // 创建Map实例
+		//当前位置（竞业达公司）对应的对应的经纬度
+		var mPoint = new BMap.Point(116.182761, 40.064173);  
+		
+		map.enableScrollWheelZoom();
+		
+		map.centerAndZoom(mPoint,17);
+		//创建标注
+		var marker = new BMap.Marker(mPoint);  // 创建标注
+        map.addOverlay(marker);               // 将标注添加到地图中
+        map.addEventListener('moving', function(){    //移动结束后定位
+            marker.setPosition(map.getCenter());
+        });
+		
+		var circle = new BMap.Circle(mPoint,300,{fillColor:"#e4fcff", strokeWeight: 1 ,fillOpacity: 0.5, strokeOpacity: 0.3});
+		//地图添加圆形检索区域
+	    //map.addOverlay(circle);
+	    //
+	    
+	    var local =  new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport:false}});
+	    //搜索附近指定建筑（现搜索餐厅），多少范围之内
+	    local.searchNearby('餐厅',mPoint,500);
+	    
+	  	
+	  	
+		
+	</script>
+</html>

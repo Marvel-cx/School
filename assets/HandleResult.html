@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>处理结果</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/ionic.min.css" />
+		<script type="text/javascript" src="js/ionic.bundle.min.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<style>
+			.bar-header {
+				padding-top: 0;
+				padding-bottom: 0;
+			}
+			
+			.bar-header img {
+				width: 20px;
+				height: 20px;
+				margin-top: 2vh;
+				position: absolute;
+			}
+			
+			.bar-header {
+				position: fixed;
+				background: #5ad2e2;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="bar bar-header">
+			<a href="#" onclick="javascript:location.href='map.html'"><img src="img/fanhui.png" / style="z-index: 10;"></a>
+			<h1 class="title" style="color: white;">处理结果</h1>
+		</div>
+		
+		<div class="content" style="overflow:auto;margin-top:44px;">
+			<div id="e-Task" class="list" style="vertical-align: middle;">
+								
+			</div>
+		</div>
+	</body>
+	<script>
+		$(function() {						
+			$.ajax({
+				type: "GET",				
+				//url: "http://172.16.31.172:8080/SchoolServer/easyInfo",
+				url: "http://223.72.155.26:8666/SchoolServer/easyInfo",
+				dataType: 'JSONP',
+                jsonp:"callback",
+                success:function(result){
+              		data=eval(result);              		
+					addBox(result);
+                },
+                error:function(){
+                	alert("服务器连接失败");
+                }
+			});
+		});
+		
+		function addBox(result) {
+			$.each(result, function(index, obj) {
+					if(obj['handleSta']=="已处理"){			
+					$("#e-Task").append("<a class='item' href='#' style='relative;'>"+
+							"<span>"+"处理保安编号:"+obj['security']+"</span>"+
+							"<span style='position: absolute;right:10px;'>"+"报警时间:"+obj['alarmTime']+"</span>"+
+							"<div>"+"处理结果:"+obj['result']+"</div>"+
+						"</a>"
+					);
+					}
+			});
+		}
+	</script>
+</html>

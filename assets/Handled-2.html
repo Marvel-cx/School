@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>报警记录</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/ionic.min.css" />
+		<script type="text/javascript" src="js/ionic.bundle.min.js"></script>		
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<style>
+			a{
+				text-decoration: none;
+			}
+			.bar-header img {
+				width: 20px;
+				height: 20px;
+				position: absolute;
+				margin-top: 5px;
+			}
+			
+			.bar-header {
+				position: fixed;
+				background: #5ad2e2;
+			}
+			
+			.bar-subheader {
+				background: #5ad2e2;
+			}
+			
+			.col-20 {
+				text-align: center;
+			}
+			
+			.col-20 a {
+				color: #d5eff3;
+				font-size: 15px;
+			}
+			
+			.col-20 .active {
+				color: white;
+				font-size: 18px;
+			}
+			
+			.nav img{
+				width: 42px;
+				height: 35px;
+			}
+			
+			.nav .tabs span{				
+				color: #d5eff3;
+				font-size: 15px;
+			}
+			
+			.nav .tabs .active{
+				color: black;
+				font-size: 18px;
+			}
+			
+			.content .list .state{
+				position:absolute;
+				background:#f17171;
+				top: 35px;
+				right: 5px;
+				height:5vh;
+				padding-left: 8px;
+				padding-right: 8px;
+				border-radius:20px;
+				color:white;
+				font-size: 15px;
+				line-height: 5vh;
+				text-align: center;
+			}
+			
+			.content .list .type{
+				background:orange;
+				height:5vh;
+				padding-left: 8px;
+				padding-right: 8px;
+				border-radius:20px;
+				color:white;
+				font-size: 15px;
+				line-height: 5vh;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="bar bar-header">
+			<a href="#" onclick="javascript:history.back(-1)"><img style="z-index: 10;" src="img/fanhui.png" /></a>
+			<h1 class="title" style="color: white;">报警记录</h1>
+		</div>
+
+		<div class="bar bar-subheader " style="position: fixed;">
+			<div class="row">
+				<div class="col-20" style="margin-left: 20%;">
+					<a href="AlarmHistory.html">全部</a>
+				</div>
+				<div class="col-20">
+					<a href="untreated.html">未处理</a>
+				</div>
+				<div class="col-20">
+					<a class="active">已处理</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="nav" style="margin-top:88px;">			
+			<div class="bar item-input-inset" style="position: fixed;" >
+				<label class="item-input-wrapper">
+			    	<i class="icon ion-ios-search placeholder-icon"></i>
+			    	<input type="search" placeholder="Search">
+			 	</label>
+			 	&nbsp;&nbsp;
+			 	<img src="img/date.png" />
+			 	&nbsp;&nbsp;
+			 	<img src="img/site.png" />
+			</div>
+			
+			<div class="tabs-striped tabs-top tabs-background-light tabs-color-assertive" style="color: black;">
+				<div class="tabs" style="position: fixed;margin-top:88px;">
+					<a class="tab-item" href="Handled.html">
+						<span>全部</span>
+					</a>
+					<a class="tab-item" href="Handled-1.html">
+						<span>吸烟</span>
+					</a>
+					<a class="tab-item active" href="#">
+						<span style="color: black;">人员超额</span>
+					</a>
+					<a class="tab-item " href="Handled-3.html">
+						<span>时间过久</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="content" style="overflow:auto;margin-top:181px;">
+			<div id="e-Task" class="list" style="vertical-align: middle;">
+											
+			</div>
+		</div>
+	</body>
+	<script>
+		$(function() {						
+			$.ajax({
+				type: "GET",				
+				url: "http://223.72.155.26:8666/SchoolServer/easyInfo",  
+				dataType: 'JSONP',
+                jsonp:"callback",
+                success:function(result){
+              		data=eval(result);
+              		
+					addBox(result);
+                },
+                error:function(){
+                	alert("服务器连接失败");
+                }
+			});
+		});
+		
+		function addBox(result) {
+			$.each(result, function(index, obj) {							
+				if(obj['handleSta']=='已处理'){
+				$("#e-Task").append("<a class='item' href='detailAlarm.html?recordNo="+obj['recordNo']+"' style='relative;'>"+
+							"<span class='siteTime' style='display: inline-block;'>"+
+								"<span style='font-size: 18px;'>"+obj['detailBuilding']+obj['detailFloor']+"</span>"+"<br/>"+
+								"<span style='font-size: 15px;color:#C0C0C0;'>"+obj['alarmTime']+"</span>"+
+							"</span>"+
+							"<span class='state'>"+obj['handleSta']+"</span>"+"<br/>"+
+							"<span class='type'>"+							
+								obj['smokeSta']+'、'+obj['infraredSta']+'、'+obj['occupySta']+
+							"</span>"+							
+						"</a>"
+					);
+				}
+			});
+		}
+	</script>
+</html>
